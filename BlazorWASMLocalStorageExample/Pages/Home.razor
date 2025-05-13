@@ -5,25 +5,45 @@
 
 <h1>@message</h1>
 
-Welcome to your new app.
+@bobState
 
 @code {
+    // Exempel 1
     private string message = "";
 
+    // Exempel 2
     private Person bob = new()
         {
             FirstName = "Bob",
             LastName = "Smith"
         };
+    private string bobState = "";
+
 
     protected override async Task OnInitializedAsync()
     {
+        // Exempel 1
         await localStorage.SetItemAsync("message", "Hiya");
         message = await localStorage.GetItemAsync<string>("message");
 
+
+        // Exempel 2
         await localStorage.SetItemAsync<Person>("bob", bob);
+
+        // Exempel 3
+        // await LocalStorage.RemoveItemAsync("bob");
+
+        if (await localStorage.ContainKeyAsync("bob"))
+        {
+            bobState = "Bob is HERE!";
+        }
+        else
+        {
+            bobState = "Bob is no where to be found :-(";
+        }
     }
 
+    // Exempel 2
     private class Person
     {
         public string? FirstName { get; set; }
