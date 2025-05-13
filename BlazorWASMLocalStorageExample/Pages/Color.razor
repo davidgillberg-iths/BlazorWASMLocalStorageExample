@@ -1,0 +1,29 @@
+﻿@page "/color"
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+<h3>Välj en färg</h3>
+
+<input type="color" @bind="selectedColor" @bind:after="SaveColor" />
+
+<div style="margin-top: 1rem; padding: 1rem; background-color:@selectedColor;">
+    Den valda färgen är: @selectedColor
+</div>
+
+@code {
+    private string selectedColor = "#ffffff";
+    private const string ColorKey = "selectedColor";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var savedColor = await localStorage.GetItemAsync<string>(ColorKey);
+        if (!string.IsNullOrWhiteSpace(savedColor))
+        {
+            selectedColor = savedColor;
+        }
+    }
+
+    private async Task SaveColor()
+    {
+        await localStorage.SetItemAsync(ColorKey, selectedColor);
+    }
+}

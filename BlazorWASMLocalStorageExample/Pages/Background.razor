@@ -1,0 +1,22 @@
+﻿@page "/background"
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+<div style="min-height: 100vh; background-color:@backgroundColor;">
+    <h1>Välkommen!</h1>
+    <p>Denna sida använder den sparade färgen som bakgrund.</p>
+</div>
+
+@code {
+    private string backgroundColor = "#b6edc9"; // fallback
+    private const string ColorKey = "selectedColor";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var savedColor = await localStorage.GetItemAsync<string>(ColorKey);
+
+        if (!string.IsNullOrWhiteSpace(savedColor))
+        {
+            backgroundColor = savedColor;
+        }
+    }
+}
