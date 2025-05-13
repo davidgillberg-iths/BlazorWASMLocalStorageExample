@@ -1,0 +1,32 @@
+﻿@page "/"
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+<PageTitle>Home</PageTitle>
+
+<h1>@message</h1>
+
+Welcome to your new app.
+
+@code {
+    private string message = "";
+
+    private Person bob = new()
+        {
+            FirstName = "Bob",
+            LastName = "Smith"
+        };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await localStorage.SetItemAsync("message", "Hiya");
+        message = await localStorage.GetItemAsync<string>("message");
+
+        await localStorage.SetItemAsync<Person>("bob", bob);
+    }
+
+    private class Person
+    {
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+    }
+}
